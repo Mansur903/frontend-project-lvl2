@@ -1,0 +1,25 @@
+name: make-lint
+
+on: push
+
+jobs:
+
+  make-lint:
+
+    name: Lint code
+
+    runs-on: ubuntu-latest
+
+    steps:
+ 
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: node version
+        run: node -v
+
+      - name: npm install, build
+        run: make install
+
+      - name: make-lint
+        run: make lint
