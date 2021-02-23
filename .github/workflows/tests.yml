@@ -1,4 +1,4 @@
-name: make-lint
+name: test
 on: push
 jobs:
   make-lint:
