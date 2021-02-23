@@ -11,7 +11,11 @@ jobs:
       - name: npm install, build
         run: make install
 
-      - name: launch tests
+      - name: launch test-coverage
+        uses: paambaati/codeclimate-action@v2.7.4
         env: 
           CC_TEST_REPORTER_ID: ${{ secrets.COVERAGE }}
-        run: make test
+        run: make test-coverage
+      
+      - name: tests
+        run: make test 
