@@ -10,9 +10,7 @@ jobs:
 
       - name: npm install, build
         run: make install
-      
-      env:
-        CC_TEST_REPORTER_ID: d2703ab37114d7bf0c2c470448a12299e909316e584862e844fb1dc163d997fc
 
       - name: launch tests
+        env: CC_TEST_REPORTER_ID: d2703ab37114d7bf0c2c470448a12299e909316e584862e844fb1dc163d997fc
         run: make test
