@@ -1,22 +1,28 @@
 name: test and code coverage
 on: push
 jobs:
-  make-lint:
-    name: Lint code
+  make-test:
+    name: test code
     runs-on: ubuntu-latest
+    strategy:
+      # Node versions list
+      matrix:
+        node-version: [14.x]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: npm install, build
         run: make install
+        env:
+          CI: true
 
-      - name: launch test-coverage
-        uses: paambaati/codeclimate-action@v2.7.4
-        env: 
-          CC_TEST_REPORTER_ID: ${{ secrets.COVERAGE }}
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: make test-coverage
+          coverageCommand: npm run coverage
           debug: true
       
       - name: tests
