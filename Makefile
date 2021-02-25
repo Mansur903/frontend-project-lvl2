@@ -11,7 +11,7 @@ lint:
 	npx eslint .
 
 test: 
-	NODE_OPTIONS=--experimental-vm-modules npx jest	--watch
+	npm run-script test
 
 test-coverage:
-	npm test -- --coverage --coverageProvider=v8
+	npm run-script test-coverage
