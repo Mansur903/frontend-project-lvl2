@@ -1,15 +1,9 @@
 name: make-lint
-
 on: push
-
 jobs:
-
   make-lint:
-
     name: Lint code
-
     runs-on: ubuntu-latest
-
     steps:
  
       - name: Checkout code
