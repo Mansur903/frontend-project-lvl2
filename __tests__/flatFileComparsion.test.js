@@ -12,4 +12,7 @@ test('flatFileComparsion', () => {
   // eslint-disable-next-line no-undef
   expect(flatFileComparsion(getFixturePath('file1.json'), getFixturePath('file2.json')))
     .toEqual(file12ComparsionResult);
+  // eslint-disable-next-line no-undef
+  expect(flatFileComparsion(getFixturePath('file1.yaml'), getFixturePath('file2.yaml')))
+    .toEqual(file12ComparsionResult);
 });
