@@ -1,27 +1,5 @@
-import { readFileSync } from 'fs';
-import path from 'path';
 import _ from 'lodash';
-import yaml from 'js-yaml';
-
-function parseJSON(filepath) {
-  return JSON.parse(readFileSync(path.resolve(`${process.cwd()}`, `${filepath}`), 'utf-8'));
-}
-
-function parseYAML(filepath) {
-  return yaml.load(readFileSync(path.resolve(`${process.cwd()}`, `${filepath}`), 'utf-8'));
-}
-
-function chooseParseFormat(filepath) {
-  const format = path.extname(filepath);
-  let file;
-  if (format === '.json') {
-    file = parseJSON(filepath);
-  }
-  if (format === '.yaml') {
-    file = parseYAML(filepath);
-  }
-  return file;
-}
+import chooseParseFormat from './parsers.js';
 
 function comparsion(dataOfFile1, dataOfFile2) {
   const keysOfFile1 = Object.keys(dataOfFile1);
