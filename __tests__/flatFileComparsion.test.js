@@ -1,7 +1,8 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import flatFileComparsion from '../files/flatFileComparsion.js';
-import file12ComparsionResultYAML, { file12ComparsionResultJSON } from '../__fixtures__/comparsionResults.js';
+import fileComparsion from '../files/deepFileComparsion.js';
+import comparsionResult
+  from '../__fixtures__/comparsionResults.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -10,9 +11,9 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 // eslint-disable-next-line no-undef
 test('flatFileComparsion', () => {
   // eslint-disable-next-line no-undef
-  expect(flatFileComparsion(getFixturePath('file1.json'), getFixturePath('file2.json')))
-    .toEqual(file12ComparsionResultJSON);
+  expect(fileComparsion(getFixturePath('file1deep.json'), getFixturePath('file2deep.json')))
+    .toEqual(comparsionResult);
   // eslint-disable-next-line no-undef
-  expect(flatFileComparsion(getFixturePath('file1.yaml'), getFixturePath('file2.yaml')))
-    .toEqual(file12ComparsionResultYAML);
+  expect(fileComparsion(getFixturePath('file1deep.yaml'), getFixturePath('file2deep.yaml')))
+    .toEqual(comparsionResult);
 });

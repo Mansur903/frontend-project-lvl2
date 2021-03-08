@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import chooseParseFormat from './parsers.js';
 
+const stylish = (result) => `{\n${result.join('\n')}\n}`;
+
 function comparsion(dataOfFile1, dataOfFile2) {
   const keysOfFile1 = Object.keys(dataOfFile1);
   const keysOfFile2 = Object.keys(dataOfFile2);
@@ -20,7 +22,7 @@ function comparsion(dataOfFile1, dataOfFile2) {
     } else if (keysOfFile2.includes(item)) acc.push(` + ${item}: ${dataOfFile2[item]}`);
     return acc;
   }, []);
-  return `{\n${result.join('\n')}\n}`;
+  return stylish(result);
 }
 
 export default function flatFileComparsion(filepath1, filepath2) {
