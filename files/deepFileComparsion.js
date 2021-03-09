@@ -4,7 +4,8 @@ import chooseParseFormat from './parsers.js';
 const makeStringFromObject = (value, replacer = '  ', spacesCount = 1, mainDepth) => {
   const defaultIndent = 1;
   const iter = (currentValue, depth) => {
-    if (typeof currentValue !== 'object') {
+    if (typeof currentValue !== 'object' || currentValue === null) {
+      if (currentValue === null) return 'null';
       return currentValue.toString();
     }
     const indentSize = depth * spacesCount;
@@ -108,6 +109,6 @@ const makeComparsion = (data1, data2) => `${stringifyAstTree(buildAstTree(data1,
 export default function fileComparsion(filepath1, filepath2) {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
-  console.log(makeComparsion(dataOfFile1, dataOfFile2));
+  // console.log(makeComparsion(dataOfFile1, dataOfFile2));
   return makeComparsion(dataOfFile1, dataOfFile2);
 }
