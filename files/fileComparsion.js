@@ -39,7 +39,7 @@ function bothKeysAreObjects(val1, val2) {
   return result;
 }
 
-function stringifyAstTree(data) {
+export default function stylish(data) {
   const defIndient = 1;
   let string = '{\n';
   data.map((item) => {
@@ -104,11 +104,11 @@ function buildAstTree(data1, data2, data, depth = 0) {
   });
   return data;
 }
-const makeComparsion = (data1, data2) => `${stringifyAstTree(buildAstTree(data1, data2, [], 0))}}`;
+const makeComparsion = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
 
-export default function fileComparsion(filepath1, filepath2) {
+export function fileComparsion(filepath1, filepath2) {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
-  // console.log(makeComparsion(dataOfFile1, dataOfFile2));
+  console.log(makeComparsion(dataOfFile1, dataOfFile2));
   return makeComparsion(dataOfFile1, dataOfFile2);
 }

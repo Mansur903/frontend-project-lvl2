@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import fileComparsion from '../files/deepFileComparsion.js';
+import { fileComparsion } from '../files/fileComparsion.js';
 import comparsionResult
   from '../__fixtures__/comparsionResults.js';
 
