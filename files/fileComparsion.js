@@ -39,8 +39,7 @@ function bothKeysAreObjects(val1, val2) {
   return result;
 }
 
-/* export default function stylish(data) {
-  // console.log(data);
+export default function stylish(data) {
   const defIndient = 1;
   let string = '{\n';
   data.map((item) => {
@@ -56,7 +55,7 @@ function bothKeysAreObjects(val1, val2) {
     return string;
   });
   return `${string}`;
-} */
+}
 // -------------------------------------------------------------------------------
 function removeExtraPoints(path) {
   let pathItems = path.split('');
@@ -71,7 +70,6 @@ function removeExtraPoints(path) {
 }
 
 function plain(data) {
-  // console.log(data);
   let resultString = '';
   let previousPath = '';
   let path = '';
@@ -95,15 +93,12 @@ function plain(data) {
       }
       path += `${item.name}.`;
     }
-    // console.log('previousPath: ', removeExtraPoints(previousPath));
     if (removeExtraPoints(path) === removeExtraPoints(previousPath)) {
       let resultStringItems = resultString.split('\n');
-      // console.log('1: ', resultStringItems);
       resultStringItems = resultStringItems.slice(0, resultStringItems.length - 2);
-      // console.log('2: ', resultStringItems);
       resultString = `${resultStringItems.join('\n')}\n`;
       if (previousValue.value.toString().substring(0, 1) === '{') {
-        if(item.value.toString().substring(0, 1) === '{') {
+        if (item.value.toString().substring(0, 1) === '{') {
           resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to [complex value]\n`;
         } else {
           resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to ${item.value}\n`;
