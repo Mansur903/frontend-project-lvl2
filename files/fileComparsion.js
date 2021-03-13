@@ -39,7 +39,8 @@ function bothKeysAreObjects(val1, val2) {
   return result;
 }
 
-export default function stylish(data) {
+/* export default function stylish(data) {
+  // console.log(data);
   const defIndient = 1;
   let string = '{\n';
   data.map((item) => {
@@ -55,8 +56,87 @@ export default function stylish(data) {
     return string;
   });
   return `${string}`;
+} */
+// -------------------------------------------------------------------------------
+function removeExtraPoints(path) {
+  let pathItems = path.split('');
+  if (pathItems[0] === '.') {
+    pathItems = pathItems.slice(1, pathItems.length);
+  }
+  if (pathItems[pathItems.length - 1] === '.') {
+    pathItems = pathItems.slice(0, pathItems.length - 1);
+  }
+  const newPath = pathItems.join('');
+  return newPath;
 }
 
+function plain(data) {
+  // console.log(data);
+  let resultString = '';
+  let previousPath = '';
+  let path = '';
+  let previousValue = { depth: 0 };
+  data.map((item) => {
+    if (item.depth > previousValue.depth) path += `${item.name}.`;
+    if (item.depth < previousValue.depth) {
+      const depthDifference = previousValue.depth - item.depth;
+      path = path.substring(0, path.length - 1);
+      let pathItems = path.split('.');
+      pathItems = pathItems.slice(0, pathItems.length - depthDifference);
+      path = pathItems.join('.');
+      previousValue = { depth: previousValue.depth };
+    }
+    if (item.depth === previousValue.depth) {
+      path = path.substring(0, path.length - 1);
+      let pathItems = path.split('.');
+      pathItems = pathItems.slice(0, pathItems.length - 1);
+      if (path !== '') {
+        path = `${pathItems.join('.')}.`;
+      }
+      path += `${item.name}.`;
+    }
+    // console.log('previousPath: ', removeExtraPoints(previousPath));
+    if (removeExtraPoints(path) === removeExtraPoints(previousPath)) {
+      let resultStringItems = resultString.split('\n');
+      // console.log('1: ', resultStringItems);
+      resultStringItems = resultStringItems.slice(0, resultStringItems.length - 2);
+      // console.log('2: ', resultStringItems);
+      resultString = `${resultStringItems.join('\n')}\n`;
+      if (previousValue.value.toString().substring(0, 1) === '{') {
+        if(item.value.toString().substring(0, 1) === '{') {
+          resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to [complex value]\n`;
+        } else {
+          resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to ${item.value}\n`;
+        }
+      } else {
+        resultString += `Property ${removeExtraPoints(path)} was updated. From ${previousValue.value} to ${item.value}\n`;
+      }
+    } else if (typeof item === 'object') {
+      if (item.status === '+ ' && item.value.toString().substring(0, 1) === '{') {
+        resultString += `Property ${removeExtraPoints(path)} was added with value: [complex value]\n`;
+      } else if (item.status === '+ ') {
+        resultString += `Property ${removeExtraPoints(path)} was added with value: ${item.value}\n`;
+      }
+      if (item.status === '- ') {
+        resultString += `Property ${removeExtraPoints(path)} was removed\n`;
+      }
+    } else {
+      if (item.status === '+ ' && item.value.substring(0, 1) === '{') {
+        resultString += `Property ${removeExtraPoints(path)} was added with value: [complex value]\n`;
+      } else if (item.status === '+ ') {
+        resultString += `Property ${removeExtraPoints(path)} was added with value: ${item.value}\n`;
+      }
+      if (item.status === '- ') {
+        resultString += `Property ${removeExtraPoints(path)} was removed\n`;
+      }
+    }
+    previousValue = item;
+    previousPath = path;
+    return resultString;
+  });
+  return resultString;
+}
+// -------------------------------------------------------------------------------
 function buildAstTree(data1, data2, data, depth = 0) {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
@@ -104,7 +184,7 @@ function buildAstTree(data1, data2, data, depth = 0) {
   });
   return data;
 }
-const makeComparsion = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
+const makeComparsion = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}}`;
 
 export function fileComparsion(filepath1, filepath2) {
   const dataOfFile1 = chooseParseFormat(filepath1);
