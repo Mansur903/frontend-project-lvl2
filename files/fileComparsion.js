@@ -1,5 +1,8 @@
 import _ from 'lodash';
 import chooseParseFormat from './parsers.js';
+import plain from '../formatters/plain.js';
+import stylish from '../formatters/stylish.js';
+import selectedFormat from '../formatters/index.js';
 
 const makeStringFromObject = (value, replacer = '  ', spacesCount = 1, mainDepth) => {
   const defaultIndent = 1;
@@ -38,118 +41,8 @@ function bothKeysAreObjects(val1, val2) {
   }
   return result;
 }
-
-export default function stylish(data) {
-  const defIndient = 1;
-  let string = '{\n';
-  data.map((item) => {
-    if (item.value === '}\n') {
-      string += `${'  '.repeat(item.depth + defIndient)}${item.value}`;
-    }
-    if (item.value === 'obj') {
-      string += `${'  '.repeat(item.depth)}${item.status}${item.name}: {\n`;
-    }
-    if (item.value !== 'obj' && item.value !== '}\n') {
-      string += `${'  '.repeat(item.depth)}${item.status}${item.name}: ${item.value}\n`;
-    }
-    return string;
-  });
-  return `${string}`;
-}
 // -------------------------------------------------------------------------------
-function removeExtraPoints(path) {
-  let pathItems = path.split('');
-  if (pathItems[0] === '.') {
-    pathItems = pathItems.slice(1, pathItems.length);
-  }
-  if (pathItems[pathItems.length - 1] === '.') {
-    pathItems = pathItems.slice(0, pathItems.length - 1);
-  }
-  const newPath = pathItems.join('');
-  return newPath;
-}
 
-function isStringValue(item) {
-  if (item === true || item === false || item === null) return false;
-  return true;
-}
-
-function plain(data) {
-  let resultString = '';
-  let previousPath = '';
-  let path = '';
-  let previousValue = { depth: 0 };
-  let thisItem;
-  let previousItem;
-  // console.log(data);
-  data.map((item) => {
-    // console.log(item.value);
-    if (!isStringValue(item.value)) {
-      thisItem = item.value;
-    } else {
-      thisItem = `'${item.value}'`;
-    }
-    if (!isStringValue(previousValue.value)) {
-      previousItem = previousValue.value;
-    } else {
-      previousItem = `'${previousValue.value}'`;
-    }
-    if (item.depth > previousValue.depth) path += `${item.name}.`;
-    if (item.depth < previousValue.depth) {
-      const depthDifference = previousValue.depth - item.depth;
-      path = path.substring(0, path.length - 1);
-      let pathItems = path.split('.');
-      pathItems = pathItems.slice(0, pathItems.length - depthDifference);
-      path = pathItems.join('.');
-      previousValue = { depth: previousValue.depth };
-    }
-    if (item.depth === previousValue.depth) {
-      path = path.substring(0, path.length - 1);
-      let pathItems = path.split('.');
-      pathItems = pathItems.slice(0, pathItems.length - 1);
-      if (path !== '') {
-        path = `${pathItems.join('.')}.`;
-      }
-      path += `${item.name}.`;
-    }
-    if (removeExtraPoints(path) === removeExtraPoints(previousPath)) {
-      let resultStringItems = resultString.split('\n');
-      resultStringItems = resultStringItems.slice(0, resultStringItems.length - 2);
-      resultString = `${resultStringItems.join('\n')}\n`;
-      if (previousValue.value.toString().substring(0, 1) === '{') {
-        if (item.value.toString().substring(0, 1) === '{') {
-          resultString += `Property '${removeExtraPoints(path)}' was updated. From [complex value] to [complex value]\n`;
-        } else {
-          resultString += `Property '${removeExtraPoints(path)}' was updated. From [complex value] to ${thisItem}\n`;
-        }
-      } else {
-        resultString += `Property '${removeExtraPoints(path)}' was updated. From ${previousItem} to ${thisItem}\n`;
-      }
-    } else if (typeof item === 'object') {
-      if (item.status === '+ ' && item.value.toString().substring(0, 1) === '{') {
-        resultString += `Property '${removeExtraPoints(path)}' was added with value: [complex value]\n`;
-      } else if (item.status === '+ ') {
-        resultString += `Property '${removeExtraPoints(path)}' was added with value: ${thisItem}\n`;
-      }
-      if (item.status === '- ') {
-        resultString += `Property '${removeExtraPoints(path)}' was removed\n`;
-      }
-    } else {
-      if (item.status === '+ ' && item.value.substring(0, 1) === '{') {
-        resultString += `Property '${removeExtraPoints(path)}' was added with value: [complex value]\n`;
-      } else if (item.status === '+ ') {
-        resultString += `Property '${removeExtraPoints(path)}' was added with value: ${thisItem}\n`;
-      }
-      if (item.status === '- ') {
-        resultString += `Property '${removeExtraPoints(path)}' was removed\n`;
-      }
-    }
-    previousValue = item;
-    previousPath = path;
-    return resultString;
-  });
-  return resultString.substring(0, resultString.length - 1);
-}
 // -------------------------------------------------------------------------------
 function buildAstTree(data1, data2, data, depth = 0) {
   const keys1 = Object.keys(data1);
@@ -202,20 +95,11 @@ function buildAstTree(data1, data2, data, depth = 0) {
   });
   return data;
 }
-const makeComparsionStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
-const makeComparsionPlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
+export const makeComparsionStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
+export const makeComparsionPlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
 
-export function genDiff(filepath1, filepath2, formatName = 'stylish') {
+export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
-  let selectedFormat;
-  if (formatName === 'stylish') {
-    console.log(makeComparsionStylish(dataOfFile1, dataOfFile2));
-    selectedFormat = makeComparsionStylish(dataOfFile1, dataOfFile2);
-  }
-  if (formatName === 'plain') {
-    console.log(makeComparsionPlain(dataOfFile1, dataOfFile2));
-    selectedFormat = makeComparsionPlain(dataOfFile1, dataOfFile2);
-  }
-  return selectedFormat;
+  return selectedFormat(dataOfFile1, dataOfFile2, formatName);
 }
