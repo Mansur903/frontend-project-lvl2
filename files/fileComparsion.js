@@ -69,12 +69,31 @@ function removeExtraPoints(path) {
   return newPath;
 }
 
+function isStringValue(item) {
+  if (item === true || item === false || item === null) return false;
+  return true;
+}
+
 function plain(data) {
   let resultString = '';
   let previousPath = '';
   let path = '';
   let previousValue = { depth: 0 };
+  let thisItem;
+  let previousItem;
+  // console.log(data);
   data.map((item) => {
+    // console.log(item.value);
+    if (!isStringValue(item.value)) {
+      thisItem = item.value;
+    } else {
+      thisItem = `'${item.value}'`;
+    }
+    if (!isStringValue(previousValue.value)) {
+      previousItem = previousValue.value;
+    } else {
+      previousItem = `'${previousValue.value}'`;
+    }
     if (item.depth > previousValue.depth) path += `${item.name}.`;
     if (item.depth < previousValue.depth) {
       const depthDifference = previousValue.depth - item.depth;
@@ -99,37 +118,37 @@ function plain(data) {
       resultString = `${resultStringItems.join('\n')}\n`;
       if (previousValue.value.toString().substring(0, 1) === '{') {
         if (item.value.toString().substring(0, 1) === '{') {
-          resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to [complex value]\n`;
+          resultString += `Property '${removeExtraPoints(path)}' was updated. From [complex value] to [complex value]\n`;
         } else {
-          resultString += `Property ${removeExtraPoints(path)} was updated. From [complex value] to ${item.value}\n`;
+          resultString += `Property '${removeExtraPoints(path)}' was updated. From [complex value] to ${thisItem}\n`;
         }
       } else {
-        resultString += `Property ${removeExtraPoints(path)} was updated. From ${previousValue.value} to ${item.value}\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was updated. From ${previousItem} to ${thisItem}\n`;
       }
     } else if (typeof item === 'object') {
       if (item.status === '+ ' && item.value.toString().substring(0, 1) === '{') {
-        resultString += `Property ${removeExtraPoints(path)} was added with value: [complex value]\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was added with value: [complex value]\n`;
       } else if (item.status === '+ ') {
-        resultString += `Property ${removeExtraPoints(path)} was added with value: ${item.value}\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was added with value: ${thisItem}\n`;
       }
       if (item.status === '- ') {
-        resultString += `Property ${removeExtraPoints(path)} was removed\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was removed\n`;
       }
     } else {
       if (item.status === '+ ' && item.value.substring(0, 1) === '{') {
-        resultString += `Property ${removeExtraPoints(path)} was added with value: [complex value]\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was added with value: [complex value]\n`;
       } else if (item.status === '+ ') {
-        resultString += `Property ${removeExtraPoints(path)} was added with value: ${item.value}\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was added with value: ${thisItem}\n`;
       }
       if (item.status === '- ') {
-        resultString += `Property ${removeExtraPoints(path)} was removed\n`;
+        resultString += `Property '${removeExtraPoints(path)}' was removed\n`;
       }
     }
     previousValue = item;
     previousPath = path;
     return resultString;
   });
-  return resultString;
+  return resultString.substring(0, resultString.length - 1);
 }
 // -------------------------------------------------------------------------------
 function buildAstTree(data1, data2, data, depth = 0) {
@@ -154,8 +173,12 @@ function buildAstTree(data1, data2, data, depth = 0) {
       if (val1 === val2) {
         data.push(getDataInfo(item, depth, '  ', val1));
       } else {
-        data.push(getDataInfo(item, depth, '- ', makeStringFromObject(val1, '  ', 1, depth)));
-        data.push(getDataInfo(item, depth, '+ ', makeStringFromObject(val2, '  ', 1, depth)));
+        if (_.isObject(val1)) {
+          data.push(getDataInfo(item, depth, '- ', makeStringFromObject(val1, '  ', 1, depth)));
+        } else data.push(getDataInfo(item, depth, '- ', val1));
+        if (_.isObject(val2)) {
+          data.push(getDataInfo(item, depth, '+ ', makeStringFromObject(val2, '  ', 1, depth)));
+        } else data.push(getDataInfo(item, depth, '+ ', val2));
       }
       return;
     }
@@ -179,11 +202,20 @@ function buildAstTree(data1, data2, data, depth = 0) {
   });
   return data;
 }
-const makeComparsion = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}}`;
+const makeComparsionStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
+const makeComparsionPlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
 
-export function fileComparsion(filepath1, filepath2) {
+export function genDiff(filepath1, filepath2, formatName = 'stylish') {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
-  console.log(makeComparsion(dataOfFile1, dataOfFile2));
-  return makeComparsion(dataOfFile1, dataOfFile2);
+  let selectedFormat;
+  if (formatName === 'stylish') {
+    console.log(makeComparsionStylish(dataOfFile1, dataOfFile2));
+    selectedFormat = makeComparsionStylish(dataOfFile1, dataOfFile2);
+  }
+  if (formatName === 'plain') {
+    console.log(makeComparsionPlain(dataOfFile1, dataOfFile2));
+    selectedFormat = makeComparsionPlain(dataOfFile1, dataOfFile2);
+  }
+  return selectedFormat;
 }
