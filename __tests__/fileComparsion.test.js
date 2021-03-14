@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
-import { genDiff } from '../files/fileComparsion.js';
+import genDiff from '../files/fileComparsion.js';
 import comparsionResult, { comparsionResultPlain } from '../__fixtures__/comparsionResults.js';
 
 const __filename = fileURLToPath(import.meta.url);

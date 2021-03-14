@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import chooseParseFormat from './parsers.js';
 import plain from '../formatters/plain.js';
 import stylish from '../formatters/stylish.js';
-import selectedFormat from '../formatters/index.js';
+import chooseParseFormat from './parsers.js';
 
 const makeStringFromObject = (value, replacer = '  ', spacesCount = 1, mainDepth) => {
   const defaultIndent = 1;
@@ -41,10 +40,8 @@ function bothKeysAreObjects(val1, val2) {
   }
   return result;
 }
-// -------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------
-function buildAstTree(data1, data2, data, depth = 0) {
+export function buildAstTree(data1, data2, data, depth = 0) {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const commonSortedKeys = _.sortBy(_.uniq(_.concat(keys1, keys2)));
@@ -95,11 +92,21 @@ function buildAstTree(data1, data2, data, depth = 0) {
   });
   return data;
 }
-export const makeComparsionStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
-export const makeComparsionPlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
+
+export const makeStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
+export const makePlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
 
 export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
-  return selectedFormat(dataOfFile1, dataOfFile2, formatName);
+  let selectedFormat;
+  if (formatName === 'stylish') {
+    console.log(makeStylish(dataOfFile1, dataOfFile2));
+    selectedFormat = makeStylish(dataOfFile1, dataOfFile2);
+  }
+  if (formatName === 'plain') {
+    console.log(makePlain(dataOfFile1, dataOfFile2));
+    selectedFormat = makePlain(dataOfFile1, dataOfFile2);
+  }
+  return selectedFormat;
 }
