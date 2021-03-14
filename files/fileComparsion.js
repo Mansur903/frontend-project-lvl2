@@ -93,20 +93,24 @@ export function buildAstTree(data1, data2, data, depth = 0) {
   return data;
 }
 
-export const makeStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
-export const makePlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
+const makeStylish = (data1, data2) => `${stylish(buildAstTree(data1, data2, [], 0))}}`;
+const makePlain = (data1, data2) => `${plain(buildAstTree(data1, data2, [], 0))}`;
+function json(data1, data2) {
+  return buildAstTree(data1, data2, [], 0);
+}
 
 export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
   const dataOfFile1 = chooseParseFormat(filepath1);
   const dataOfFile2 = chooseParseFormat(filepath2);
   let selectedFormat;
   if (formatName === 'stylish') {
-    console.log(makeStylish(dataOfFile1, dataOfFile2));
     selectedFormat = makeStylish(dataOfFile1, dataOfFile2);
   }
   if (formatName === 'plain') {
-    console.log(makePlain(dataOfFile1, dataOfFile2));
     selectedFormat = makePlain(dataOfFile1, dataOfFile2);
+  }
+  if (formatName === 'json') {
+    selectedFormat = json(dataOfFile1, dataOfFile2);
   }
   return selectedFormat;
 }
