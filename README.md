@@ -26,4 +26,5 @@
 [![asciicast](https://asciinema.org/a/rvhwORZz3Lujbs5Her0jSyGqQ.svg)](https://asciinema.org/a/rvhwORZz3Lujbs5Her0jSyGqQ)  
 
 ### Вывод в JSON:  
-[![asciicast](https://asciinema.org/a/kPOUWG3oIAlFaEOCfKdVieK93.svg)](https://asciinema.org/a/kPOUWG3oIAlFaEOCfKdVieK93)
+[![asciicast](https://asciinema.org/a/kPOUWG3oIAlFaEOCfKdVieK93.svg)](https://asciinema.org/a/kPOUWG3oIAlFaEOCfKdVieK93) 
+ddd
