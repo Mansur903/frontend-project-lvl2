@@ -57,101 +57,11 @@ Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
 export const comparsionResultJSON = [
+  { name: 'follow', status: 'removed', value: false },
+  { name: 'host', status: 'unchanged', value: 'hexlet.io' },
+  { name: 'proxy', status: 'removed', value: '123.234.53.22' },
   {
-    name: 'common', depth: 0, status: '  ', value: 'obj',
+    name: 'timeout', status: 'changed', oldValue: 50, newValue: 20,
   },
-  {
-    name: 'follow', depth: 1, status: '+ ', value: false,
-  },
-  {
-    name: 'setting1', depth: 1, status: '  ', value: 'Value 1',
-  },
-  {
-    name: 'setting2', depth: 1, status: '- ', value: 200,
-  },
-  {
-    name: 'setting3', depth: 1, status: '- ', value: true,
-  },
-  {
-    name: 'setting3', depth: 1, status: '+ ', value: null,
-  },
-  {
-    name: 'setting4', depth: 1, status: '+ ', value: 'blah blah',
-  },
-  {
-    name: 'setting5',
-    depth: 1,
-    status: '+ ',
-    value: '{\n      key5: value5\n    }',
-  },
-  {
-    name: 'setting6', depth: 1, status: '  ', value: 'obj',
-  },
-  {
-    name: 'doge', depth: 2, status: '  ', value: 'obj',
-  },
-  {
-    name: 'wow', depth: 3, status: '- ', value: '',
-  },
-  {
-    name: 'wow', depth: 3, status: '+ ', value: 'so much',
-  },
-  {
-    name: 'doge', depth: 2, status: '  ', value: '}\n',
-  },
-  {
-    name: 'key', depth: 2, status: '  ', value: 'value',
-  },
-  {
-    name: 'ops', depth: 2, status: '+ ', value: 'vops',
-  },
-  {
-    name: 'setting6', depth: 1, status: '  ', value: '}\n',
-  },
-  {
-    name: 'common', depth: 0, status: '  ', value: '}\n',
-  },
-  {
-    name: 'group1', depth: 0, status: '  ', value: 'obj',
-  },
-  {
-    name: 'baz', depth: 1, status: '- ', value: 'bas',
-  },
-  {
-    name: 'baz', depth: 1, status: '+ ', value: 'bars',
-  },
-  {
-    name: 'foo', depth: 1, status: '  ', value: 'bar',
-  },
-  {
-    name: 'nest',
-    depth: 1,
-    status: '- ',
-    value: '{\n      key: value\n    }',
-  },
-  {
-    name: 'nest', depth: 1, status: '+ ', value: 'str',
-  },
-  {
-    name: 'group1', depth: 0, status: '  ', value: '}\n',
-  },
-  {
-    name: 'group2',
-    depth: 0,
-    status: '- ',
-    value: '{\n    abc: 12345\n    deep: {\n      id: 45\n    }\n  }',
-  },
-  {
-    name: 'group3',
-    depth: 0,
-    status: '+ ',
-    value: '{\n'
-      + '    deep: {\n'
-      + '      id: {\n'
-      + '        number: 45\n'
-      + '      }\n'
-      + '    }\n'
-      + '    fee: 100500\n'
-      + '  }',
-  },
+  { name: 'verbose', status: 'added', value: true },
 ];

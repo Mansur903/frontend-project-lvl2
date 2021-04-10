@@ -3,11 +3,11 @@ import { readFileSync } from 'fs';
 import path from 'path';
 
 function parseJSON(filepath) {
-  return JSON.parse(readFileSync(path.resolve(`${process.cwd()}`, `${filepath}`), 'utf-8'));
+  return JSON.parse(readFileSync(path.resolve(`${process.cwd()}/__fixtures__/`, `${filepath}`), 'utf-8'));
 }
 
 function parseYAML(filepath) {
-  return yaml.load(readFileSync(path.resolve(`${process.cwd()}`, `${filepath}`), 'utf-8'));
+  return yaml.load(readFileSync(path.resolve(`${process.cwd()}/__fixtures__/`, `${filepath}`), 'utf-8'));
 }
 
 export default function chooseParseFormat(filepath) {
