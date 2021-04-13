@@ -9,5 +9,5 @@ program.version('0.0.1')
   .action((filepath1, filepath2) => {
     const options = program.opts();
     console.log(genDiff(filepath1, filepath2, options.format));
-  });
-program.parse(process.argv);
+  })
+  .parse(process.argv);
