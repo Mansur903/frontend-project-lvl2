@@ -2,7 +2,8 @@
 import { program } from 'commander';
 import genDiff from '../files/genTree.js';
 
-program.version('0.0.1')
+program
+  .version('0.0.1')
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format <type>', 'output format (default: "stylish")')
   .action((filepath1, filepath2) => {

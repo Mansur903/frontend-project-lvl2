@@ -102,5 +102,4 @@ export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
   const dataOfFile2 = chooseParseFormat(filepath2);
   const generatedTree = genTree(dataOfFile1, dataOfFile2);
   return chooseFormat(formatName, generatedTree);
-  // return null;
 }
