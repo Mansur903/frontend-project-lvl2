@@ -60,8 +60,8 @@ const keyTypes = [
   },
 ];
 export default function genTree(data1, data2) {
-  console.log(data1);
-  console.log(data2);
+  // console.log(data1);
+  // console.log(data2);
   if (data1 === undefined || data2 === undefined) return undefined;
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
