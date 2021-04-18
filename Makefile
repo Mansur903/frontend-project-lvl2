@@ -17,4 +17,4 @@ test-coverage:
 	npm run test-coverage
 
 test-watch:
-	NODE_OPTIONS=--experimental-vm-modules npx jest --watch
+	npx jest --watch

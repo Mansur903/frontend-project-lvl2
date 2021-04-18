@@ -1,8 +1,4 @@
 import _ from 'lodash';
-// import stylish from '../formatters/stylish.js';
-// import plain from '../formatters/plain.js';
-import chooseParseFormat from './parsers.js';
-import chooseFormat from '../formatters/index.js';
 
 function bothKeysAreObjects(val1, val2) {
   if (_.isObject(val1) && _.isObject(val2)) return true;
@@ -63,7 +59,7 @@ const keyTypes = [
     },
   },
 ];
-function genTree(data1, data2) {
+export default function genTree(data1, data2) {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const commonSortedKeys = _.sortBy(_.uniq(_.concat(keys1, keys2)));
@@ -95,11 +91,4 @@ function genTree(data1, data2) {
     };
   });
   return result;
-}
-
-export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
-  const dataOfFile1 = chooseParseFormat(filepath1);
-  const dataOfFile2 = chooseParseFormat(filepath2);
-  const generatedTree = genTree(dataOfFile1, dataOfFile2);
-  return chooseFormat(formatName, generatedTree);
 }
