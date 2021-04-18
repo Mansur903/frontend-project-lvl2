@@ -22,6 +22,7 @@ const makeStringFromObject = (value, replacer = ' ', spacesCount = 1, curDepth) 
 const separator = '  ';
 
 export default function stylish(data) {
+  if (data === undefined || data === null) return 'Incorrect data';
   function wrapper(thisData, depth) {
     const result = thisData.map((item) => {
       if (item.status === 'bothObjects') {

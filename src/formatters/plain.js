@@ -9,6 +9,7 @@ function genPath(path, item) {
 }
 
 export default function plain(data) {
+  if (data === undefined || data === null) return 'Incorrect data';
   function wrapper(thisData, path = []) {
     const thisPath = path;
     const onlyModifiedValues = thisData.filter((item) => item.status !== 'unchanged');
