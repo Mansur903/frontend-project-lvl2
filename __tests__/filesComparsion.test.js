@@ -14,11 +14,11 @@ const jsonResult = fs.readFileSync(getFixturePath('jsonResult.txt'), 'utf-8');
 test('fileComparsionStylish', () => {
   expect(genDiff(getFixturePath('file1deep.json'), getFixturePath('file2deep.json')))
     .toEqual(stylishResult);
-  expect(genDiff(getFixturePath('file1deep.yaml'), getFixturePath('file2deep.yaml')))
+  expect(genDiff(getFixturePath('file1deep.yml'), getFixturePath('file2deep.yml')))
     .toEqual(stylishResult);
 });
 test('fileComparsionPlain', () => {
-  expect(genDiff(getFixturePath('file1deep.json'), getFixturePath('file2deep.yaml'), 'plain'))
+  expect(genDiff(getFixturePath('file1deep.json'), getFixturePath('file2deep.yml'), 'plain'))
     .toEqual(plainResult);
 });
 test('fileComparsionJSON', () => {
