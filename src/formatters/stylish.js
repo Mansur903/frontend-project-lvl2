@@ -19,8 +19,10 @@ const makeStringFromObject = (value, replacer = ' ', spacesCount = 1, curDepth) 
   };
   return iter(value, curDepth);
 };
+
 const separator = ' ';
 const spacesCount = 1;
+
 export default function stylish(data) {
   function wrapper(thisData, depth) {
     const result = thisData.map((item) => {
