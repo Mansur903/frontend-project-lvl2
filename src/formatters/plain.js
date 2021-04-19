@@ -27,15 +27,6 @@ export default function plain(data) {
         return `Property '${generatedPath.join('.')}' was removed`;
       }
       if (item.status === 'changed') {
-        if (!isStringValue(item.newValue) && !isStringValue(item.oldValue)) {
-          return `Property '${generatedPath.join('.')}' was updated. From ${item.oldValue} to ${item.newValue}`;
-        }
-        if (!isStringValue(item.oldValue)) {
-          return `Property '${generatedPath.join('.')}' was updated. From ${item.oldValue} to '${item.newValue}'`;
-        }
-        if (!isStringValue(item.newValue)) {
-          return `Property '${generatedPath.join('.')}' was updated. From '${item.oldValue}' to ${item.newValue}`;
-        }
         if (typeof item.oldValue === 'object' && typeof item.newValue === 'object') {
           return `Property '${generatedPath.join('.')}' was updated. From [complex value] to [complex value]`;
         }
@@ -44,6 +35,15 @@ export default function plain(data) {
         }
         if (typeof item.newValue === 'object') {
           return `Property '${generatedPath.join('.')}' was updated. From '${item.oldValue}' to [complex value]`;
+        }
+        if (!isStringValue(item.newValue) && !isStringValue(item.oldValue)) {
+          return `Property '${generatedPath.join('.')}' was updated. From ${item.oldValue} to ${item.newValue}`;
+        }
+        if (!isStringValue(item.oldValue)) {
+          return `Property '${generatedPath.join('.')}' was updated. From ${item.oldValue} to '${item.newValue}'`;
+        }
+        if (!isStringValue(item.newValue)) {
+          return `Property '${generatedPath.join('.')}' was updated. From '${item.oldValue}' to ${item.newValue}`;
         }
         return `Property '${generatedPath.join('.')}' was updated. From '${item.oldValue}' to '${item.newValue}'`;
       }
