@@ -1,6 +1,16 @@
-function isStringValue(item) {
-  if (item === true || item === false || item === null) return false;
+/* function isStringValue(item) {
+  if (item === true || item === false || item === null ||) return false;
   return true;
+} */
+
+function isStringValue(item) {
+  if (typeof item !== 'string') return false;
+  return true;
+}
+
+function isItemObject(item) {
+  if (typeof item === 'object' && item !== null) return true;
+  return false;
 }
 
 function genPath(path, item) {
@@ -9,7 +19,6 @@ function genPath(path, item) {
 }
 
 export default function plain(data) {
-  // if (data === undefined) return 'null';
   function wrapper(thisData, path = []) {
     const thisPath = path;
     const onlyModifiedValues = thisData.filter((item) => item.status !== 'unchanged');
@@ -27,13 +36,13 @@ export default function plain(data) {
         return `Property '${generatedPath.join('.')}' was removed`;
       }
       if (item.status === 'changed') {
-        if (typeof item.oldValue === 'object' && typeof item.newValue === 'object') {
+        if (isItemObject(item.oldValue) && isItemObject(item.newValue)) {
           return `Property '${generatedPath.join('.')}' was updated. From [complex value] to [complex value]`;
         }
-        if (typeof item.oldValue === 'object') {
+        if (isItemObject(item.oldValue)) {
           return `Property '${generatedPath.join('.')}' was updated. From [complex value] to '${item.newValue}'`;
         }
-        if (typeof item.newValue === 'object') {
+        if (isItemObject(item.newValue)) {
           return `Property '${generatedPath.join('.')}' was updated. From '${item.oldValue}' to [complex value]`;
         }
         if (!isStringValue(item.newValue) && !isStringValue(item.oldValue)) {
