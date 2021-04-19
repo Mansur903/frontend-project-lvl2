@@ -16,7 +16,7 @@ export default function chooseParseFormat(filepath) {
   if (format === '.json') {
     file = parseJSON(filepath);
   }
-  if (format === '.yaml') {
+  if (format === '.yml') {
     file = parseYAML(filepath);
   }
   return file;

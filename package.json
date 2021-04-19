@@ -1,8 +1,8 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Mansur903/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/Mansur903/frontend-project-lvl2/actions)",
-  "main": "bin/gendiff.js",
+  "description": "A program that determines the difference between two data structures",
+  "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test-coverage": "npm test -- --coverage --coverageProvider=v8"
@@ -19,7 +19,6 @@
   "homepage": "https://github.com/Mansur903/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^7.1.0",
-    "eslint-plugin-jest": "^24.3.2",
     "js-yaml": "^3.14.1",
     "lodash": "^4.17.21"
   },
@@ -29,12 +28,13 @@
     "transform": {}
   },
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "src/bin/gendiff.js"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.2",
     "jest": "^26.6.3"
   }
 }
