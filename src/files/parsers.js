@@ -12,12 +12,11 @@ function parseYAML(filepath) {
 
 export default function chooseParseFormat(filepath) {
   const format = path.extname(filepath);
-  let file;
   if (format === '.json') {
-    file = parseJSON(filepath);
+    return parseJSON(filepath);
   }
   if (format === '.yml') {
-    file = parseYAML(filepath);
+    return parseYAML(filepath);
   }
-  return file;
+  return null;
 }
