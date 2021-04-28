@@ -16,18 +16,16 @@ const pathAfterJson = getFixturePath('file2deep.json');
 const pathBeforeYml = getFixturePath('file1deep.yml');
 const pathAfterYml = getFixturePath('file2deep.yml');
 
-const resultStylishJson = genDiff(pathBeforeJson, pathAfterJson);
-const resultStylishYml = genDiff(pathBeforeYml, pathAfterYml);
-const resultPlainJson = genDiff(pathBeforeJson, pathAfterJson, 'plain');
-const resultJsonYml = genDiff(pathBeforeYml, pathAfterYml, 'json');
-
-test('fileComparsionStylish', () => {
-  expect(resultStylishJson).toEqual(stylishResult);
-  expect(resultStylishYml).toEqual(stylishResult);
+test.each([
+  [genDiff(pathBeforeJson, pathAfterJson)],
+  [genDiff(pathBeforeYml, pathAfterYml)],
+])('fileComparsionResult', (expectedResult) => {
+  expect(expectedResult).toEqual(stylishResult);
 });
+
 test('fileComparsionPlain', () => {
-  expect(resultPlainJson).toEqual(plainResult);
+  expect(genDiff(pathBeforeJson, pathAfterJson, 'plain')).toEqual(plainResult);
 });
 test('fileComparsionJSON', () => {
-  expect(resultJsonYml).toEqual(jsonResult);
+  expect(genDiff(pathBeforeYml, pathAfterYml, 'json')).toEqual(jsonResult);
 });

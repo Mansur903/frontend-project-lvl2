@@ -1,11 +1,10 @@
 import yaml from 'js-yaml';
 
-export default function makeParse(data, format) {
-  if (format === '.json') {
-    return JSON.parse(data);
-  }
-  if (format === '.yml') {
-    return yaml.load(data);
-  }
-  return null;
-}
+export default (data, format) => {
+  const formatList = {
+    json: JSON.parse,
+    yml: yaml.load,
+    yaml: yaml.load,
+  };
+  return formatList[format](data);
+};

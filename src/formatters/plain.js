@@ -6,20 +6,7 @@ function genPath(path, item) {
 function stringify(item) {
   if (typeof item === 'object' && item !== null) return '[complex value]';
   if (typeof item === 'string') return `'${item}'`;
-  return item;
-}
-
-function generateResult(type, path, firstValue, secondValue) {
-  if (type === 'added') {
-    return `Property '${path}' was added with value: ${firstValue}`;
-  }
-  if (type === 'removed') {
-    return `Property '${path}' was removed`;
-  }
-  if (type === 'changed') {
-    return `Property '${path}' was updated. From ${firstValue} to ${secondValue}`;
-  }
-  return null;
+  return `${item}`;
 }
 
 export default function plain(data) {
@@ -31,11 +18,11 @@ export default function plain(data) {
       const resultPath = generatedPath.join('.');
       switch (item.status) {
         case 'added':
-          return generateResult('added', resultPath, stringify(item.value));
+          return `Property '${resultPath}' was added with value: ${stringify(item.value)}`;
         case 'removed':
-          return generateResult('removed', resultPath);
+          return `Property '${resultPath}' was removed`;
         case 'changed':
-          return generateResult('changed', resultPath, stringify(item.oldValue), stringify(item.newValue));
+          return `Property '${resultPath}' was updated. From ${stringify(item.oldValue)} to ${stringify(item.newValue)}`;
         case 'bothObjects':
           return wrapper(item.children, generatedPath);
         default:
