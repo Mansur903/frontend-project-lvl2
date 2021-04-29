@@ -5,7 +5,7 @@ import genDiff from '../src/index.js';
 program
   .version('0.0.1')
   .arguments('<filepath1> <filepath2>')
-  .option('-f, --format <type>', 'output format (default: "stylish")')
+  .option('-f, --format <type>', 'output format (default: "stylish")', 'stylish')
   .action((filepath1, filepath2) => {
     const options = program.opts();
     console.log(genDiff(filepath1, filepath2, options.format));
